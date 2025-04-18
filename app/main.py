@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
 
-
 #  This is fastapi instance that are using as container of this entire application.
 #  And it controls all the routes and endpoints, middleware, request responses, and all the other things that are going to be used in this application.
 app = FastAPI(title="My First API", description="API for learning FastAPI", version="0.1")
@@ -28,5 +27,12 @@ async def read_all_books():
 async def read_book(book_id: int):
     for book in BOOKS:
         if book["id"] == book_id:
+            return book
+    raise HTTPException(status_code=404, detail="Book not found")
+
+@app.get("/books/title/")
+async def get_book_by_title(title: str):
+    for book in BOOKS:
+        if book["title"] == title:
             return book
     raise HTTPException(status_code=404, detail="Book not found")
